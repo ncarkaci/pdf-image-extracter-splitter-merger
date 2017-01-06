@@ -41,14 +41,14 @@ def extractJPEGfilesFromPdf(filename):
 		istream = pdf.find(b"stream", i)
 		if istream < 0:
 		    break
-		istart = pdf.find(startBytesofJPEG, istream, istream + 20)
+		istart = pdf.find(startBytesofJPEG, istream, istream + 10)
 		if istart < 0:
-		    i = istream + 20
+		    i = istream + 10
 		    continue
 		iend = pdf.find(b"endstream", istart)
 		if iend < 0:
 		    raise Exception("Didn't find end of stream!")
-		iend = pdf.find(endBytesofJPEG, iend - 20)
+		iend = pdf.find(endBytesofJPEG, iend - 10)
 		if iend < 0:
 		    raise Exception("Didn't find end of JPG!")
 
@@ -58,7 +58,7 @@ def extractJPEGfilesFromPdf(filename):
 		jpg = pdf[istart:iend]
 
 		# write jpeg file		
-		with open("jpg_%d.jpg" % numberofJPEG, "wb") as jpgfile:
+		with open(filename+"_jpg_%d.jpg" % numberofJPEG, "wb") as jpgfile:
 		    jpgfile.write(jpg)
 
 		numberofJPEG += 1
